@@ -2,7 +2,7 @@
 from argparse import ArgumentParser
 import os
 import glob
-from ..ft_base_init.filenames_sorting import sort_filenames
+from .filenames_sorting import sort_filenames
 import subprocess, shlex
 
 class Input:
@@ -19,38 +19,38 @@ class Input:
                 )
         self.parser.add_argument("-t", "--type_test",
                 help="Options are all, species, mutation, contig. Using this command, you can specify if you only want to create certain tests.",
-                nargs="+",
                 type = str,
                 default = "all"
                 )
         
-        self.parser.add_argument("-sd", "--save_directory",
+        self.parser.add_argument("-s", "--save_directory",
                 help="Directory where the tests should be saved.",
-                nargs="+",
                 type = str,
                 default = None
                 )
         
         self.parser.add_argument("-f", "--filename",
                                  help="Filename for the test file.",
-                nargs="+",
                 type = str,
                 default = None)
         
         self.parser.add_argument("-c", "--command",
                             help = "Command as string if you want to modify the command for testing your tool.",
-                            nargs = "+",
                             type = str,
                             default = None
                             )
     
-        self.parser.add_argument("-sl", "--species_list",
-                                 help = "List of species you want to test.",
+        self.parser.add_argument("--values_list",
+                                 help = "List of vlaues you want to test your software for the corresponding flag. You need to specify that if you want to analyze species",
                             nargs = "+",
-                            type = str,
                             default = None
                             )
-    
+        
+        self.parser.add_argument("--arg_identifier",
+                                 help = "In case your argument identifier derives from the base identifiers for resfinder but both mean the same you can specifier it here.",
+                                default = None
+                                )
+
     def parse_args(self):
         args = self.parser.parse_args()
 
@@ -104,6 +104,7 @@ class Input:
     
     def check_cmd(self, cmd):
         if cmd != None:
+            print(cmd)
             args = shlex.split(cmd)
             python_interpreter = args[0]
             assert "-j" not in args, "Please do not provide the -j argument in the command. As this will be generated automatically to track the json file directory."
@@ -114,7 +115,7 @@ class Input:
             self.check_python_interpreter_location(module_path = args[2], python_path=python_interpreter)
         else:
             pass   
-            
+        
     
     def check_receive_dir(self, dir_files):
         assert os.path.isdir(dir_files), "Directory with test files does not exist."

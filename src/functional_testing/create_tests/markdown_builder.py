@@ -21,11 +21,14 @@ class MarkdownBuilder(str):
     def add_text(self, text):
         self.content += text + "\n\n"
         
+    def add_line(self, line):
+        self.content += line + "\n"
+        
     def add_empty_line(self):
         self.content += "\n"
         
-    def add_code_intend(self, code):
-        self.content += "..." +"\t\t" +  code + "\n"
+    def add_code_intend(self, code, intendation = "\t\t" ):
+        self.content += "..." + intendation +  code + "\n"
         
 
     

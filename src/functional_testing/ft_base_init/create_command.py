@@ -10,14 +10,15 @@ class SoftwareCommand(list):
         """
         :param list: List. Contains either one or two elements
         """
-        self.append(new_list)
+        self.extend(new_list)
     
-    def base_command(self, filepath, species = None):
+    def base_command(self, filepath):
         """
         :param path_resfinder: path to resfinder module
         :param filepath: List. Contains either one or two elements
         :species: Default is None. If not None than the species name will be added. Otherwise default of program will be chosen
         """
+
         filename0 = filepath[0]
         while True:
             filename0 = os.path.dirname(filename0)
@@ -32,10 +33,15 @@ class SoftwareCommand(list):
         self.append("python")
         
         self.append(run_resfinder.__file__)
+        
+    def add_species(self, species):
+        self.append("-s")
+        self.append(species)
+        
+    def add_file_input(self, filepath):
+        match  = [end for end in ["fastq", "fq"] if end in os.path.basename(filepath[0])]
 
-        match = [end for end in ["fq", "fastq"] if filepath[0].endswith(end)]
         if len(match) > 0:
-
             self.append("-ifq")
             for i in filepath:
                 self.append(i)
@@ -44,13 +50,18 @@ class SoftwareCommand(list):
             filepath = filepath[0]
             self.append("-ifa")
             self.append(filepath)
-            
-        if species != None:
-            self.append("-s")
-            self.append(species)
+
     
     def add_mut_setting(self, setting):
-        assert setting in ["-c", "-acq", "-u"]
+        if "-" not in setting:
+            setting = "-" + setting
+        if not setting in ["-c", "-acq", "-u"]: 
+            print("setting for mutation has not been provided. Mutation parameter is automatically set to -c.")
+            setting = "-c"
+        else:
+            pass
+
+            
         if setting == "-u":
             self.append(setting)
             self.append('-acq')
@@ -68,7 +79,8 @@ class SoftwareCommand(list):
         :param value: Value for argument
         """
         self.append("-" + arg)
-        self.append(value)
+        if value != "":
+            self.append(value)
         
     def add_json_output(self, species, basename = None, output_dir = None):
         self.species_dir = self.DirController.create_org_dir(species, basename)

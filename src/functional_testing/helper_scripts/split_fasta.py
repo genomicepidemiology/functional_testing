@@ -27,8 +27,8 @@ class FastaModifier:
     def calc_positions(json_data_true):
         seq_variations_true = json_data_true['seq_regions']
         seq_variations_true = seq_variations_true[next(iter(seq_variations_true))]
-        start_pos = seq_variations_true['query_start_pos']
-        end_pos = seq_variations_true['query_end_pos']
+        start_pos = seq_variations_true['ref_start_pos']
+        end_pos = seq_variations_true['ref_end_pos']
         half_pos = int((int(end_pos) - int(start_pos))/2)
         start_pos = int(start_pos)
         end_pos = int(end_pos)
