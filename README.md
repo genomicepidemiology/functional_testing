@@ -39,9 +39,9 @@ pdm run python src/functional_testing/__main__.py -d /home/people/s220672/resfin
 <br>
 **NOTE**: Sometimes the flags between different softwares differ but they have the same meaning or do not have a different functionality. Then you can use this flag to input another flag for which a certain test should be created for. 
 
-- `save_directory`: Default is None. Here you can specify the directory where the tests should be saved. If you do not specify it, the tests will be saved in the directory where the software is located.
+- `--save_directory`: Default is None. Here you can specify the directory where the tests should be saved. If you do not specify it, the tests will be saved in the directory where the software is located.
 
-- `filename`: Default is None. Here you can specify the name of the test file. If you do not specify it, the tests will be saved in the directory where the software is located.
+- `--filename`: Default is None. Here you can specify the name of the test file. If you do not specify it, the tests will be saved in the directory where the software is located.
 
 - `--command`: Default is None which means that tests for Resfinder will be created. However, you can create tests also for other softwares by specifying the command for that. Note ,that you need to define the python interpreter of the corresponding software. 
 <br>

@@ -1,4 +1,6 @@
 import os
+import random
+import string
 
 class DirController:
     def __init__(self):
@@ -34,12 +36,23 @@ class DirController:
         Returns:
             str: Path to the created directory.
         """
-        species_dir = os.path.join(self.data_storage, species, org_filename)
+        species_dir = os.path.join(self.data_storage, species)
+        org_spec = os.path.join(self.data_storage, species, org_filename)
+        letters = string.ascii_letters
+        rand_dir = ''.join(random.choice(letters) for _ in range(5))
+        rand_spec = os.path.join(org_spec, rand_dir)
         if not os.path.isdir(species_dir):
             os.mkdir(species_dir)
         else:
             pass
-        return species_dir
+        
+        if not os.path.isdir(org_spec):
+            os.mkdir(org_spec)
+        else:
+            pass
+        os.mkdir(rand_spec)
+        
+        return rand_spec
     
     def create_test_temp(self):
         """

@@ -64,7 +64,6 @@ class GenerateTest:
                         
                         json_base_df = self.read_json(output_json_base) # has to be the one from original 
                         
-                        
                         # both depend on json having a seq_variations content
                         self.TestCreator.test_mutations(mut_type = mut_set)
                         
@@ -94,9 +93,14 @@ class GenerateTest:
                                                     value = species)
                 
                 if check_output(output_json_base) > 0:
+                    self.TestCreator.switch = CreateTestCommand.CommandRun.jump_to_dir # very important: tells TestCreator if directory for calling commnad needs to be changed
+
                     self.TestCreator.species = species
                     self.create_tests(output_json_base, output_json_new, CreateTestCommand)
                     self.TestCreator.test_seq_region()
+                    
+                    self.TestCreator.remove_file_temp()
+
                     
 
     def mutation_test(self, mut_setting_list):
@@ -118,9 +122,48 @@ class GenerateTest:
                 
                 
                 if check_output(output_json_base) > 0:
+                    self.TestCreator.switch = CreateTestCommand.CommandRun.jump_to_dir # very important: tells TestCreator if directory for calling commnad needs to be changed
                     self.TestCreator.species = "all"
                     self.create_tests(output_json_base, output_json_new, CreateTestCommand)
                     self.TestCreator.test_mutations(mut_type = mut_set)
+                    
+                    self.TestCreator.remove_file_temp()
+
+
+    def contig_test(self, mutation_type = "c"):
+        for basename, files in self.dir_files_dic.items():
+            CreateOutput = CreateOutputs(self.cmd)
+            output_json_base = CreateOutput.get_command(basename,
+                                                        filepath = files,
+                                                        mut_setting = mutation_type)
+            CreateOutput.run_command()
+            
+            CreateTestCommand = CreateOutputs(self.cmd)
+            
+            output_json_new = CreateTestCommand.get_command(basename,
+                                                            filepath = files,
+                                                            output_dir_json = self.test_active_json_out,
+                                                            mut_setting = mutation_type)
+            
+            
+            if check_output(output_json_base) > 0:
+                self.TestCreator.switch = CreateTestCommand.CommandRun.jump_to_dir # very important: tells TestCreator if directory for calling commnad needs to be changed
+
+                
+                self.TestCreator.species = "all"
+                
+                self.create_tests(output_json_base, output_json_new, CreateTestCommand)
+                
+                json_base_df = self.read_json(output_json_base)
+
+                if "-ifa" in CreateOutput.Command and len(json_base_df) > 0:
+                    fasta_file = files[0]
+                    self.TestCreator.add_contig_test(filepath_fasta = fasta_file)
+                    
+                self.TestCreator.remove_file_temp()
+
+
+
 
     def custom_test(self, possible_values_list, argument_identifier):
         for basename, files in self.dir_files_dic.items():
@@ -145,6 +188,9 @@ class GenerateTest:
                     self.TestCreator.species = "all"
                     self.create_tests(output_json_base, output_json_new, CreateTestCommand)
                     self.TestCreator
+                    
+                self.TestCreator.remove_file_temp()
+
     
     def save_tests(self, filename, filedir):
         self.TestCreator.write_markdown(filedir, filename)

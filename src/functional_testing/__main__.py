@@ -7,8 +7,8 @@ from input_control.mutation_control import mutations_control
 # I could not run with pdm because of module import errors
 # Create like a package to create tests for different params
 
-# create a test for contigs - find the resistant gene and split it in two contigs, then test if the position is still the same - resfinder should be able to consider this
 
+# create a test for contigs - find the resistant gene and split it in two contigs, then test if the position is still the same - resfinder should be able to consider this
 
 
 
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     diff_arg = args.arg_identifier
         
     dir_files_dic = YourInput.check_receive_dir(dir_files)
-        
+    
     test_active_json_out = YourInput.test_active_json_output
     
     YourInput.check_cmd(cmd)

@@ -154,13 +154,10 @@ class MakeTests:
         code_read_fasta = f"with open('{filepath_fasta}', 'r') as f:"
         self.Markdown.add_codeline(code_read_fasta)
         self.Markdown.add_code_intend(code = "fasta = f.read()")
-        code_variations = "seq_variations_true = json_data_true['seq_variations']"
-        self.Markdown.add_codeline(code_variations)
         init_class = "ModFasta = FastaModifier()"
         self.Markdown.add_codeline(init_class)
         self.Markdown.add_codeline(f"both_seqs, both_headers = ModFasta.modify_seqs(json_data_true, '{filepath_fasta}')")
-        
-        self.Markdown.add_codeline(f"ModFasta.create_fasta('test_temp/new_fasta.fa', both_seqs, both_headers, )") # requires import of ModFasta
+        self.Markdown.add_codeline(f"ModFasta.create_fasta('test_temp/new_fasta', both_seqs, both_headers)") # requires import of ModFasta
         # software command must be changed
         software_command = self.change_fasta(self.software_command, "test_temp/new_fasta.fa")
         self.add_switcher(software_command)
@@ -169,16 +166,20 @@ class MakeTests:
         json_str_new = "with open(json_file_new, 'r') as f:"
         self.Markdown.add_codeline(json_str_new)
         self.Markdown.add_code_intend(code = "json_data_new = json.load(f)")
-        code_regions = "seq_region_new = json_data_new['seq_regions']"
-        self.Markdown.add_codeline(code_regions)
-        code_pandas_true = "seq_variations_table_true = pd.DataFrame(seq_variations_true)"
-        self.Markdown.add_codeline(code_pandas_true)
-        code_pandas_new = "seq_variations_table_new = pd.DataFrame(seq_variations_new)"
-        self.Markdown.add_codeline(code_pandas_new)
-        ref_end = "assert seq_variations_table_true.loc['ref_end_pos'].values.tolist() == seq_variations_table_new.loc['ref_end_pos'].values.tolist(), 'Ref end position is not equal'"
-        self.Markdown.add_codeline(ref_end)
-        ref_start = "assert seq_variations_table_true.loc['ref_start_pos'].values.tolist() == seq_variations_table_new.loc['ref_start_pos'].values.tolist(), 'Ref start position is not equal'"
-        self.Markdown.add_codeline(ref_start)
+        codeline = "seq_variations = json_data_true['seq_variations']"
+        self.Markdown.add_codeline(codeline)
+        code_table = "seq_variations_table_true = pd.DataFrame(seq_variations)"
+        self.Markdown.add_codeline(code_table)
+        code_test_regions = "if len(seq_variations_table_true) > 0:"
+        self.Markdown.add_codeline(code_test_regions)
+        code_new = "seq_variations_new = json_data_new['seq_variations']"
+        self.Markdown.add_code_intend(code_new)
+        code_table_new = "seq_variations_table_new = pd.DataFrame(seq_variations_new)"
+        self.Markdown.add_code_intend(code_table_new)
+        test_alignment_length = f"assert seq_variations_table_true.loc['seq_var'].values.tolist() == seq_variations_table_new.loc['seq_var'].values.tolist(), f'Reference sequence length for {self.species} is not equal'"
+        self.Markdown.add_code_intend(test_alignment_length)
+        test_ref_start = f"assert seq_variations_table_true.loc['ref_end_pos'].values.tolist() == seq_variations_table_new.loc['ref_end_pos'].values.tolist(), f'Ref id for {self.species} is not equal'"
+        self.Markdown.add_code_intend(test_ref_start)
         self.Markdown.add_empty_line()
         self.Markdown.close_codeblock()        
 
@@ -215,14 +216,10 @@ class MakeTests:
         self.Markdown.add_code_intend(code_new_variations)
         code_pandas_new = "seq_variations_table_new = pd.DataFrame(seq_variations_new)"
         self.Markdown.add_code_intend(code_pandas_new)
-        query_end = "assert seq_variations_table_true.loc['query_end_pos'].values.tolist() == seq_variations_table_new.loc['query_end_pos'].values.tolist(), 'Query end position is not equal'"
-        self.Markdown.add_code_intend(query_end)
-        query_start = "assert seq_variations_table_true.loc['query_start_pos'].values.tolist() == seq_variations_table_new.loc['query_start_pos'].values.tolist(), 'Query start position is not equal'"
-        self.Markdown.add_code_intend(query_start)
         ref_end = "assert seq_variations_table_true.loc['ref_end_pos'].values.tolist() == seq_variations_table_new.loc['ref_end_pos'].values.tolist(), 'Ref end position is not equal'"
-        self.Markdown.add_codeline(ref_end)
+        self.Markdown.add_code_intend(ref_end)
         ref_start = "assert seq_variations_table_true.loc['ref_start_pos'].values.tolist() == seq_variations_table_new.loc['ref_start_pos'].values.tolist(), 'Ref start position is not equal'"
-        self.Markdown.add_codeline(ref_start)
+        self.Markdown.add_code_intend(ref_start)
         self.Markdown.add_empty_line()
         self.Markdown.close_codeblock()
     
@@ -260,11 +257,11 @@ class MakeTests:
         self.Markdown.add_code_intend(code = "for header, sequence in zip(headers, sequences):", intendation="\t\t\t")
         self.Markdown.add_code_intend(code = "seq_record = SeqRecord(Seq(sequence), id=header[1:], description='')", intendation="\t\t\t\t")
         self.Markdown.add_code_intend(code = "records.append(seq_record)", intendation="\t\t\t\t")
-        self.Markdown.add_code_intend(code = "with open(output_file, 'w') as fasta_file:", intendation="\t\t\t")
+        self.Markdown.add_code_intend(code = "with open(output_file + '.fa', 'w') as fasta_file:", intendation="\t\t\t")
         self.Markdown.add_code_intend(code = "SeqIO.write(records, fasta_file, 'fasta')", intendation="\t\t\t\t")
         self.Markdown.add_code_intend("@staticmethod")
         self.Markdown.add_code_intend("def calc_positions(json_data_true):")
-        self.Markdown.add_code_intend(code = "seq_variations_true = json_data_true['seq_variations']", intendation="\t\t\t")
+        self.Markdown.add_code_intend(code = "seq_variations_true = json_data_true['seq_regions']", intendation="\t\t\t")
         self.Markdown.add_code_intend(code = "seq_variations_true = seq_variations_true[next(iter(seq_variations_true))]", intendation="\t\t\t")
         self.Markdown.add_code_intend(code = "start_pos = seq_variations_true['ref_start_pos']", intendation="\t\t\t")
         self.Markdown.add_code_intend(code = "end_pos = seq_variations_true['ref_end_pos']", intendation="\t\t\t")
@@ -288,7 +285,7 @@ class MakeTests:
         index_json = self.software_command.index("-j")
         json_path = self.software_command[index_json + 1]
         self.Markdown.add_codeblock()
-        self.Markdown.add_codeline(f"os.remove({json_path})")
+        self.Markdown.add_codeline(f"os.remove('{json_path}')")
         self.Markdown.add_empty_line()
         self.Markdown.close_codeblock()
         

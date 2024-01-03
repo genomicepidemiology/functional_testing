@@ -19,7 +19,6 @@ class FastaModifier:
         for header, sequence in zip(headers, sequences):
             seq_record = SeqRecord(Seq(sequence), id=header[1:], description="")
             records.append(seq_record)
-            
         with open(output_file, "w") as fasta_file:
             SeqIO.write(records, fasta_file, "fasta")
             
