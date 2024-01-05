@@ -1,13 +1,12 @@
-import markdown
 import os
 import re
 import glob
 
 
-class ChangePath:
+class ChangeMarkdown:
     def __init__(self, path_markdown):
         self.markdown_content = self.read_markdown(path_markdown=path_markdown)
-      
+        self.path_markdown = path_markdown
     @staticmethod  
     def read_markdown(path_markdown):
         """
@@ -25,20 +24,30 @@ class ChangePath:
             markdown_content = file.read()
         return markdown_content
 
-    def change_resfinder_path(self, new_path, ):
+    def change_resfinder_path(self, old_path, new_path):
         """
         Changes the path of a ResFinder Python script in the Markdown content.
         
         Parameters:
             new_path (str): New path for the ResFinder Python script.
         """
-        
-        if new_path.endswith(".py"):
-            path_pattern = re.compile(pattern = r'([^/\s]+/[^/\s]+\.py)')
+        if new_path.startswith("'") and new_path.endswith("'"):
+            pass
+        else:
+            new_path = "'{}'".format(new_path)
+        if old_path.startswith("'") and old_path.endswith("'"):
+            pass
+        else:
+            old_path = "'{}'".format(old_path)
+        print(old_path, new_path)
+        if new_path.endswith(".py") or new_path.endswith(".py'"):
+            pass
+
         else:
             print("Please provide a path to a python file.")
             return
-        self.markdown_content = re.sub(path_pattern, new_path, self.markdown_content)
+        self.markdown_content = self.markdown_content.replace(old_path, new_path)
+
 
     def change_data_paths(self, path_dir):
         """
@@ -87,6 +96,34 @@ class ChangePath:
             basename_file = os.path.basename(file)
             pattern = re.compile(r'(/(?:[^/\s]+/(?!.*temp)[^/\s]+/)*[^/\s]+/)' + re.escape(basename_file))
             self.markdown_content = re.sub(pattern, file, self.markdown_content)
+            
+    def change_flag(self, old_flag, new_flag):
+        """
+        Changes the flag of each command in the Markdown content.
+        
+        Parameters:
+            old_flag (str): Old flag of the command.
+            new_flag (str): New flag of the command.
+        """
+        if new_flag.startswith("'") and new_flag.endswith("'"):
+            pass
+        else:
+            new_flag = "'{}'".format(new_flag)
+        if old_flag.startswith("'") and old_flag.endswith("'"):
+            pass
+        else:
+            old_path = "'{}'".format(old_flag)
+        print(old_path, new_flag)
+        if new_flag.endswith(".py") or new_flag.endswith(".py'"):
+            pass
+        self.markdown_content = self.markdown_content.replace(old_flag, new_flag)
+        
+    def save(self, filepath_new = None):
+        if filepath_new == None:
+            filepath_new = os.path.join(os.path.dirname(self.path_markdown), "new_" + os.path.basename(self.path_markdown))
+
+        with open(filepath_new, 'w') as file:
+            file.write(self.markdown_content)
 
 def change_path(path_markdown, path_resfinder = None, path_dir_data = None,  path_json_true = None, path_json_temp = None):
     """
@@ -99,18 +136,18 @@ def change_path(path_markdown, path_resfinder = None, path_dir_data = None,  pat
     """
 
     assert os.path.isfile(path_markdown) == True, "Markdown File does not exist."
-    ChangeMarkdown = ChangePath(path_markdown)
+    changer = ChangeMarkdown(path_markdown)
     if path_resfinder != None:
-        ChangeMarkdown.change_resfinder_path(path_resfinder)
+        changer.change_resfinder_path(path_resfinder)
     
     if path_dir_data != None:
-        ChangeMarkdown.change_data_paths(path_dir_data)
+        changer.change_data_paths(path_dir_data)
         
     if path_json_true != None:
-        ChangeMarkdown.change_json_true(path_json_true)
+        changer.change_json_true(path_json_true)
 
     if path_json_temp != None:
-        ChangeMarkdown.change_json_temp(path_json_temp)
+        changer.change_json_temp(path_json_temp)
         
     filepath_new = os.path.join(os.path.dirname(path_markdown), "new_" + os.path.basename(path_markdown))
     

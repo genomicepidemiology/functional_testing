@@ -101,3 +101,39 @@ assert seq_regions_table_true.loc['alignment_length'].values.tolist() == seq_reg
 ```
 
 Here, the seq_regions_table_true was initially saved when creating the tests while the seq_regions_table_new is automatically generated in the test markdown file as a result of the new software version.
+
+
+## Modifying the created markdown script
+
+It appears that sometimes you change crucial parts and identifiers of your software such as flags or paths. Therefore the tool provides commands to change these.
+
+*Example: Change flag -ifa to -f in all commands in the markdown file*
+
+```python
+
+from src.functional_testing.helper_scripts.replace_paths import ChangeMarkdown
+
+changer = ChangeMarkdown(path_to_markdown_file)
+
+changer.change_flag(old_flag = '-ifa', new_flag = '-f')
+
+```
+
+*Example: Change path of resfinder_python_script in the commands*
+
+This might be useful if you did a major refactoring
+
+```python
+
+changer.change_resfinder_path(old_path = "/home/people/s220672/resfinder/src/resfinder/run_resfinder.py", new_path = "/home/people/s220672/resfinder/src/resfinder/__main__.py")
+
+```
+
+### Save changes
+
+```python
+
+filepath_new = "my_new_markdown.md"
+changer.save(filepath_new)
+
+``` 
