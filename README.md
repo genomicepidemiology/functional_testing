@@ -129,6 +129,16 @@ changer.change_resfinder_path(old_path = "/home/people/s220672/resfinder/src/res
 
 ```
 
+*Example: Remove an argument from a command in your markdown script*
+
+This removes in all subprocess commands the argument --point. This is useful, if you deleted an argument in a new version of your program.
+
+```python 
+
+changer.remove_arg("--point", "subprocess")
+```
+
+
 ### Save changes
 
 ```python

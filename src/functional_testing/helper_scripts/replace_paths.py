@@ -47,7 +47,58 @@ class ChangeMarkdown:
             print("Please provide a path to a python file.")
             return
         self.markdown_content = self.markdown_content.replace(old_path, new_path)
+     
+    @staticmethod   
+    def extract_substrings(original_string, search_string, end_character):
+        pattern = search_string + r"(.*?)" + re.escape(end_character)
+        substrings = re.findall(pattern, original_string)
+        return substrings
+    @staticmethod
+    def extract_list_from_substring(substring):
+        # Define a regular expression pattern to match the list
+        pattern = r"\[.*?\]"
+        
+        # Use regular expression to find the list within the substring
+        match = re.search(pattern, substring)
+        
+        if match:
+            # Extract the matched substring (which is the list)
+            list_string = match.group(0)
+            
+            # Evaluate the list string to convert it into a Python list
+            result_list = eval(list_string)
+            return result_list
+        else:
+            return None
+    
+    def remove_arg(self, arg_to_remove, substring_find = "subprocess"):
+        """
+        This command will look for a subprocess command in the string and then removes a specific argument from that command. This can be useful if your new program does not contain a certain flag anymore.
+        
+        Parameters:
+            arg_to_remove (str): This is the argument you want to replace. It must start with - or -- .
+            substring_find (str): This is the substring which acts as an identifier for the string you are looking for in the markdown document. For example subprocess looks for all substrings whcih starts with subprocess
+        """
+        all_subprocess = self.extract_substrings(self.markdown_content, substring_find, ")")
+        for subprocess in all_subprocess:
+            subprocess_new = subprocess
+            command = self.extract_list_from_substring(subprocess) # extracts the list in subprocess 
+            assert type(command) == list
+            command_new = command.copy()
+            if command == None:
+                pass
+            else:
+                if arg_to_remove in command: # checks if arg is in the list
+                    command_new.remove(arg_to_remove) # removes it if it is there
+                else:
+                    pass
+                command_new = str(command_new)
+                subprocess_new = subprocess_new.replace(str(command),command_new)
+                self.markdown_content = self.markdown_content.replace(subprocess, subprocess_new)
+        
 
+        
+        
 
     def change_data_paths(self, path_dir):
         """
@@ -97,6 +148,7 @@ class ChangeMarkdown:
             pattern = re.compile(r'(/(?:[^/\s]+/(?!.*temp)[^/\s]+/)*[^/\s]+/)' + re.escape(basename_file))
             self.markdown_content = re.sub(pattern, file, self.markdown_content)
             
+            
     def change_flag(self, old_flag, new_flag):
         """
         Changes the flag of each command in the Markdown content.
@@ -112,8 +164,7 @@ class ChangeMarkdown:
         if old_flag.startswith("'") and old_flag.endswith("'"):
             pass
         else:
-            old_path = "'{}'".format(old_flag)
-        print(old_path, new_flag)
+            old_flag = "'{}'".format(old_flag)
         if new_flag.endswith(".py") or new_flag.endswith(".py'"):
             pass
         self.markdown_content = self.markdown_content.replace(old_flag, new_flag)
@@ -154,3 +205,6 @@ def change_path(path_markdown, path_resfinder = None, path_dir_data = None,  pat
     with open(filepath_new, 'w') as file:
         file.write(ChangeMarkdown.markdown_content)
     
+changer = ChangeMarkdown("/home/people/s220672/resfinder/test_temp/test_new_test_all_formatted.md")
+changer.remove_arg_in_subprocess("--point")
+print(changer.markdown_content)
