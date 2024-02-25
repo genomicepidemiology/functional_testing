@@ -206,5 +206,6 @@ def change_path(path_markdown, path_resfinder = None, path_dir_data = None,  pat
         file.write(ChangeMarkdown.markdown_content)
     
 changer = ChangeMarkdown("/home/people/s220672/resfinder/test_temp/test_new_test_all_formatted.md")
-changer.remove_arg_in_subprocess("--point")
-print(changer.markdown_content)
+changer.remove_arg("--point")
+changer.remove_arg("--point", substring_find="CompletedProcess")
+changer.save("/home/people/s220672/resfinder/test_temp/test_all_formatted.md")
