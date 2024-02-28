@@ -133,7 +133,7 @@ class MakeTests:
         self.Markdown.add_codeline(code_pandas_new)
         self.Markdown.add_codeline("assert seq_variations_table_true.shape == seq_variations_table_new.shape, 'Shape of seq_variations is not equal'")
         
-        self.Markdown.add_codeline("if len(seq_variations_table_true) > 0:")
+        self.Markdown.add_codeline("if seq_variations_table_true.shape[0] > 0:")
         
         test_key = "assert seq_variations_table_new.loc['key'].values.tolist()[0].split(';')[0] == seq_variations_table_true.loc['key'].values.tolist()[0].split(';')[0], 'First element of key is not equal'" # compares the first element of key (before first ;) of both dataframes"
         self.Markdown.add_code_intend(test_key)
@@ -170,7 +170,7 @@ class MakeTests:
         self.Markdown.add_codeline(codeline)
         code_table = "seq_variations_table_true = pd.DataFrame(seq_variations)"
         self.Markdown.add_codeline(code_table)
-        code_test_regions = "if len(seq_variations_table_true) > 0:"
+        code_test_regions = "if seq_variations_table_true.shape[0] > 0:"
         self.Markdown.add_codeline(code_test_regions)
         code_new = "seq_variations_new = json_data_new['seq_variations']"
         self.Markdown.add_code_intend(code_new)
@@ -190,7 +190,7 @@ class MakeTests:
         self.Markdown.add_codeline(codeline)
         code_table = "seq_regions_table_true = pd.DataFrame(seq_regions)"
         self.Markdown.add_codeline(code_table)
-        code_test_regions = "if len(seq_regions_table_true) > 0:"
+        code_test_regions = "if seq_regions_table_true.shape[0] > 0:"
         self.Markdown.add_codeline(code_test_regions)
         code_new = "seq_region_new = json_data_new['seq_regions']"
         self.Markdown.add_code_intend(code_new)
@@ -210,7 +210,7 @@ class MakeTests:
         self.Markdown.add_codeline(code_test_variations)
         code_pandas_true = "seq_variations_table_true = pd.DataFrame(seq_variations_true)"
         self.Markdown.add_codeline(code_pandas_true)
-        code_len_variations = "if len(seq_variations_table_true) > 0:"
+        code_len_variations = "if seq_variations_table_true.shape[0] > 0:"
         self.Markdown.add_codeline(code_len_variations)
         code_new_variations = "seq_variations_new = json_data_new['seq_variations']"
         self.Markdown.add_code_intend(code_new_variations)

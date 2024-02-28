@@ -169,12 +169,17 @@ class ChangeMarkdown:
             pass
         self.markdown_content = self.markdown_content.replace(old_flag, new_flag)
         
+    def change_substring(self, old_substring, new_substring):
+        self.markdown_content = self.markdown_content.replace(old_substring, new_substring)
+        
     def save(self, filepath_new = None):
         if filepath_new == None:
             filepath_new = os.path.join(os.path.dirname(self.path_markdown), "new_" + os.path.basename(self.path_markdown))
 
         with open(filepath_new, 'w') as file:
             file.write(self.markdown_content)
+            
+
 
 def change_path(path_markdown, path_resfinder = None, path_dir_data = None,  path_json_true = None, path_json_temp = None):
     """
@@ -205,7 +210,6 @@ def change_path(path_markdown, path_resfinder = None, path_dir_data = None,  pat
     with open(filepath_new, 'w') as file:
         file.write(ChangeMarkdown.markdown_content)
     
-changer = ChangeMarkdown("/home/people/s220672/resfinder/test_temp/test_new_test_all_formatted.md")
-changer.remove_arg("--point")
-changer.remove_arg("--point", substring_find="CompletedProcess")
-changer.save("/home/people/s220672/resfinder/test_temp/test_all_formatted.md")
+
+
+        
