@@ -290,7 +290,6 @@ class MakeTests:
         
     def remove_file_temp(self):
         self.software_command = list(self.software_command)
-        print("COMMAND:" + str(self.software_command))
         assert type(self.software_command) == list, "Software command must be a list"
         if "-j" not in self.software_command:
             raise IndexError( "Software command must contain -j flag")

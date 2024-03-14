@@ -51,7 +51,7 @@ pdm run python src/functional_testing/__main__.py -d /home/people/s220672/resfin
 ```bash
 pdm run python -m src.functional_testing.__main__ -d /home/people/s220672/functional_testing/tests/data -c "/home/people/s220672/virulencefinder/.venv/bin/python -m src.virulencefinder.__main__ -p /home/people/s220672/databases/virulencefinder_db" --type_test "species" --values_list "virulence_ecoli" --arg_identifier "d"
 ```
-The command flag is given as a string and contains the python interpreter from the virtual environment of virlencefinder. Further it has the relative path to the module based on the parent directory of virulencefinder. The flag -p is added because it needs to be defined as an internal command for virulencefinder to be able to run. Every single flag which follows after that is a flag for this software.
+The command flag is given as a string and contains the python interpreter from the virtual environment of virulencefinder. Further it has the relative path to the module based on the parent directory of virulencefinder. The flag -p is added because it needs to be defined as an internal command for virulencefinder to be able to run. Every single flag which follows after that is a flag for the software *functional_testing*
 <br>
 
 ### Output
