@@ -1,9 +1,9 @@
 import subprocess
-from ft_base_init.create_command import SoftwareCommand
-from helper_scripts.create_dir_struc import DirController
+from functional_testing.ft_base_init.create_command import SoftwareCommand
+from functional_testing.helper_scripts.create_dir_struc import DirController
 import sys
 import shutil
-from helper_scripts.switch_working_dir import SwitchDir
+from functional_testing.helper_scripts.switch_working_dir import SwitchDir
 ## Input: ldirectory to files, database
 
 class CreateOutputs:
@@ -79,7 +79,6 @@ class CreateOutputs:
         
     def run_command(self):
         self.CommandRun.cmd = self.command
-        print(self.command)
         self.CommandRun.switcher() # runs command under consideration that tool directory is somewhere else and if so switches to that and back to old working dir
         shutil.rmtree(self.DirController.create_test_temp())
         

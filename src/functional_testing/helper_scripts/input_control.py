@@ -2,7 +2,7 @@
 from argparse import ArgumentParser
 import os
 import glob
-from .filenames_sorting import sort_filenames
+from functional_testing.helper_scripts.filenames_sorting import sort_filenames
 import subprocess, shlex
 
 class Input:
@@ -116,7 +116,6 @@ class Input:
         else:
             pass   
         
-    
     def check_receive_dir(self, dir_files):
         assert os.path.isdir(dir_files), "Directory with test files does not exist."
         filenames = glob.glob(os.path.join(dir_files, '*.fast*'))

@@ -50,7 +50,7 @@ class SoftwareCommand(list):
             filepath = filepath[0]
             self.append("-ifa")
             self.append(filepath)
-
+        
     
     def add_mut_setting(self, ):
         self.append("-c")

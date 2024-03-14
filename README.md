@@ -8,13 +8,17 @@ This software was developed to create automatic functional tests for the softwar
 
 ## How to use this software
 
-
+### Installation
 
 ```bash
+git clone https://github.com/genomicepidemiology/functional_testing.git
+
 cd functional_testing
 
 pdm install
 ```
+
+### Make your first tests for resfinder 
 
 ```bash
 pdm run python src/functional_testing/__main__.py -d /home/people/s220672/resfinder/tests/data  
@@ -46,15 +50,25 @@ pdm run python src/functional_testing/__main__.py -d /home/people/s220672/resfin
 - `--command`: Default is None which means that tests for Resfinder will be created. However, you can create tests also for other softwares by specifying the command for that. Note ,that you need to define the python interpreter of the corresponding software. 
 <br>
 
+### Custom testing - Enter your own command
+
+This is a little more complex because your software will not be part of the module functional_testing. So we need to parse a default command of your old software as a string after the flag -c. You should consider the following:
+
+1. Maybe you have changed the dependencies or similar in your new software. So you must parse a specific python interpreter from a virtual environment which was used or contains the dependencies for your **old** version. This ensures that no errors occur during the testing
+2. You can parse the path to your main script of your old software version as module or as a script.
+3. Add additional flags which are necessary for your software to run.
+4. The type of the test should be custom if you will not analyse either contigs, mutations or species.
+    - If you parse "custom", then a basic comparison of the dictionary will happen.
+
 *Example*:
 <br>
 ```bash
 pdm run python -m src.functional_testing.__main__ -d /home/people/s220672/functional_testing/tests/data -c "/home/people/s220672/virulencefinder/.venv/bin/python -m src.virulencefinder.__main__ -p /home/people/s220672/databases/virulencefinder_db" --type_test "species" --values_list "virulence_ecoli" --arg_identifier "d"
 ```
-The command flag is given as a string and contains the python interpreter from the virtual environment of virulencefinder. Further it has the relative path to the module based on the parent directory of virulencefinder. The flag -p is added because it needs to be defined as an internal command for virulencefinder to be able to run. Every single flag which follows after that is a flag for the software *functional_testing*
+The command flag is given as a string and contains the python interpreter from the virtual environment of virulencefinder. Further it has the relative path to the module based on the parent directory of virulencefinder. Note: YOu should put the old version The flag -p is added because it needs to be defined as an internal command for virulencefinder to be able to run. Every single flag which follows after that is a flag for the software *functional_testing*
 <br>
 
-### Output
+## Output
 
 The software outputs a markdown file which contains a series of tests based on the input files in the directory. If you move the output file to another directory you need to make sure that you can handle the imports in the markdown file. These are listed directly at the top.
 

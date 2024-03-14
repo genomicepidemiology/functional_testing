@@ -1,5 +1,5 @@
-from helper_scripts.read_json_dic import check_output
-from ft_base_init.create_test_base import CreateOutputs
+from functional_testing.helper_scripts.read_json_dic import check_output
+from functional_testing.ft_base_init.create_test_base import CreateOutputs
 from pandas import DataFrame
 import json 
 import os

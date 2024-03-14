@@ -1,4 +1,4 @@
-from .markdown_builder import MarkdownBuilder
+from functional_testing.create_tests.markdown_builder import MarkdownBuilder
 import pandas as pd
 import os
 
