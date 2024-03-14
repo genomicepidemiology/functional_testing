@@ -61,9 +61,6 @@ The software outputs a markdown file which contains a series of tests based on t
 **NOTE:** If the key seq regions in the output json file is empty when creating the tests, no tests will be created for the corresponding input file in the markdown document.
 <br>
 
-
-
-
 ## Test information
 
 The software creates various tests. Currenlty the following tests can be conducted:

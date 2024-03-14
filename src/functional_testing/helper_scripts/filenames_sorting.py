@@ -5,7 +5,7 @@ def sort_filenames(filenames):
     """
     Enables users to just dump all files and this sorts these. So if there are forward and backward files for one sample, than this function will put both in a list.
     The function works based on levenshtein distance and if the distance is 1 between two basenames and the the distance is 0 if you cut off the ending of a filename (which is for fastq files 1 or 2) than these files will be matched
-    :return: list with matched forward and backward files and single strings for single files
+    :return: dict with matched forward and backward files and single strings for single files
     """ 
     filepath_basename = {}
     collected_basenames = set()

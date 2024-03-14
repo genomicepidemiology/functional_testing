@@ -6,7 +6,7 @@ from input_control.mutation_control import mutations_control
 # problems: I needed to change the imports in Resfinder to have no module import error
 # I could not run with pdm because of module import errors
 # Create like a package to create tests for different params
-
+import glob
 
 # create a test for contigs - find the resistant gene and split it in two contigs, then test if the position is still the same - resfinder should be able to consider this
 
@@ -26,6 +26,7 @@ if __name__ == "__main__":
     filename = args.filename
     dirname = args.save_directory
     diff_arg = args.arg_identifier
+    
         
     dir_files_dic = YourInput.check_receive_dir(dir_files)
     

@@ -114,13 +114,8 @@ class MakeTests:
         self.Markdown.close_codeblock()
         
 
-    def test_mutations(self, mut_type):
-        if mut_type == "-c":
-            mut_type = "chromosomal"
-        elif mut_type == "-acq":
-            mut_type = "acquired"
-        elif mut_type == "-u":
-            mut_type = "unknown"
+    def test_mutations(self, mut_type = "-c, -acq"):
+
         self.Markdown.add_header(f"Test mutations for {self.species} and mut_type: {mut_type}")
         self.Markdown.add_codeblock()
         code_table_true = "seq_variations_true = json_data_true['seq_variations']"
@@ -219,7 +214,19 @@ class MakeTests:
         ref_end = "assert seq_variations_table_true.loc['ref_end_pos'].values.tolist() == seq_variations_table_new.loc['ref_end_pos'].values.tolist(), 'Ref end position is not equal'"
         self.Markdown.add_code_intend(ref_end)
         ref_start = "assert seq_variations_table_true.loc['ref_start_pos'].values.tolist() == seq_variations_table_new.loc['ref_start_pos'].values.tolist(), 'Ref start position is not equal'"
-        self.Markdown.add_code_intend(ref_start)
+        #self.Markdown.add_code_intend(ref_start)
+        code_test_phenotypes = "phenotypes_true = json_data_true['phenotypes']"
+        self.Markdown.add_codeline(code_test_phenotypes)
+        code_pandas_true = "phenotypes_table_true = pd.DataFrame(phenotypes_true)"
+        self.Markdown.add_codeline(code_pandas_true)
+        code_analyze_len = "if phenotypes_table_true.shape[0] > 0:"
+        self.Markdown.add_codeline(code_analyze_len)
+        code_new_variations = "seq_variations_new = json_data_new['phenotypes']"
+        self.Markdown.add_code_intend(code_new_variations)
+        code_pandas_new = "seq_variations_table_new = pd.DataFrame(seq_variations_new)"
+        self.Markdown.add_code_intend(code_pandas_new)
+        check_keys = "assert seq_variations_table_true.loc['phenotypes'].values.tolist() == seq_variations_table_new.loc['phenotypes'].values.tolist(), 'Phenotypes are not equal'"
+        self.Markdown.add_code_intend(check_keys)
         self.Markdown.add_empty_line()
         self.Markdown.close_codeblock()
     
@@ -282,6 +289,12 @@ class MakeTests:
         self.Markdown.close_codeblock()
         
     def remove_file_temp(self):
+        self.software_command = list(self.software_command)
+        print("COMMAND:" + str(self.software_command))
+        assert type(self.software_command) == list, "Software command must be a list"
+        if "-j" not in self.software_command:
+            raise IndexError( "Software command must contain -j flag")
+        
         index_json = self.software_command.index("-j")
         json_path = self.software_command[index_json + 1]
         self.Markdown.add_codeblock()

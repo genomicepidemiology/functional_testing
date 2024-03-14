@@ -40,13 +40,13 @@ class CreateOutputs:
         return command
         
     
-    def get_command(self, basename, filepath = None, species = "ecoli", mut_setting = "acq", output_dir_json = None):
+    def get_command(self, basename, filepath = None, species = "ecoli", output_dir_json = None):
         assert species in self.species, "Species not in database. Please choose one of the following: {}".format(self.species)
         self.Command = SoftwareCommand(self.DirController)
         if self.command == None: # FOr default which is just a resfinder run
             self.Command.base_command(filepath)
             self.Command.add_species(species)
-            self.Command.add_mut_setting(mut_setting)
+            self.Command.add_mut_setting()
         else:
             # for case where you input a command 
             self.command = self.command.split(" ") # reformat in list object

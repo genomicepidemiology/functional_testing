@@ -52,21 +52,9 @@ class SoftwareCommand(list):
             self.append(filepath)
 
     
-    def add_mut_setting(self, setting):
-        if "-" not in setting:
-            setting = "-" + setting
-        if not setting in ["-c", "-acq", "-u"]: 
-            print("setting for mutation has not been provided. Mutation parameter is automatically set to -c.")
-            setting = "-c"
-        else:
-            pass
-
-            
-        if setting == "-u":
-            self.append(setting)
-            self.append('-acq')
-        else:
-            self.append(setting)
+    def add_mut_setting(self, ):
+        self.append("-c")
+        self.append("-acq")
         
     def add_output(self):
         temp_dir = self.DirController.create_test_temp()
@@ -91,7 +79,7 @@ class SoftwareCommand(list):
                 setting = "".join(matching_elements)
                 output_json_file = os.path.join(self.species_dir, f"{basename}_{setting}.json")
             else:
-                output_json_file = self.species_dir +".json"
+                output_json_file = os.path.join(self.species_dir, f"{basename}.json") 
             self.append(output_json_file)
         else:
             output_json_file = os.path.join(output_dir, basename + ".json")

@@ -97,7 +97,20 @@ class ChangeMarkdown:
                 self.markdown_content = self.markdown_content.replace(subprocess, subprocess_new)
         
 
+    def remove_flag(self, old_flag):
+        """
+        Removes the flag of each command in the Markdown content.
         
+        Parameters:
+            old_flag (str): Old flag of the command.
+        """
+        if old_flag.startswith("'") and old_flag.endswith("'"):
+            pass
+        else:
+            old_flag = "'{}'".format(old_flag)
+        if old_flag.endswith(".py") or old_flag.endswith(".py'"):
+            pass
+        self.markdown_content = self.markdown_content.replace(old_flag, "")
         
 
     def change_data_paths(self, path_dir):

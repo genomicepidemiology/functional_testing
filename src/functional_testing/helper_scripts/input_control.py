@@ -43,7 +43,7 @@ class Input:
         self.parser.add_argument("--values_list",
                                  help = "List of vlaues you want to test your software for the corresponding flag. You need to specify that if you want to analyze species",
                             nargs = "+",
-                            default = None
+                            default = []
                             )
         
         self.parser.add_argument("--arg_identifier",
