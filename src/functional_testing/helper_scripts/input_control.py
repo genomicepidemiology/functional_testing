@@ -72,11 +72,11 @@ class Input:
         file_path = module_path.replace('.', '/') + '.py'
         path = os.path.normpath(file_path)
         splitted_path = path.split(os.path.sep)
-        src_index = splitted_path.index("src")
-        module_name = splitted_path[src_index + 1]
-        splitted_python = os.path.normpath(python_path).split(os.path.sep)
-        assert module_name in splitted_python, "Please provide the python interpreter which is installed in the directory of the module you are calling." 
-        assert splitted_path[0] == "src", "The module path you provide must start with src and is the relative path from the parent directory of the module you are calling."
+     #   src_index = splitted_path.index("src")
+      #  module_name = splitted_path[src_index + 1]
+       # splitted_python = os.path.normpath(python_path).split(os.path.sep)
+       # assert module_name in splitted_python, "Please provide the python interpreter which is installed in the directory of the module you are calling." 
+     #   assert splitted_path[0] == "src", "The module path you provide must start with src and is the relative path from the parent directory of the module you are calling."
     
     @staticmethod   
     def is_module(module_path):
@@ -109,7 +109,7 @@ class Input:
             python_interpreter = args[0]
             assert "-j" not in args, "Please do not provide the -j argument in the command. As this will be generated automatically to track the json file directory."
             assert "-json" not in args, "Please do not provide the -json argument in the command. As this will be generated automatically to track the json file directory."
-            assert args[1] == "-m", "Please insert the command -m as a second argument."
+           # assert args[1] == "-m", "Please insert the command -m as a second argument."
             assert self.check_python(python_interpreter) == True, "Please provide a valid python interpreter."
             assert self.is_module(args[2]) == True, "Please provide a valid module name where the relative path from "
             self.check_python_interpreter_location(module_path = args[2], python_path=python_interpreter)

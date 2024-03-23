@@ -114,9 +114,20 @@ assert seq_regions_table_true.loc['alignment_length'].values.tolist() == seq_reg
 Here, the seq_regions_table_true was initially saved when creating the tests while the seq_regions_table_new is automatically generated in the test markdown file as a result of the new software version.
 
 
+
+## A brief overview of how the software works
+
+1. The software executes the commands of the old software version which is for instance in the package resfinder or the software parsed by the command
+2. Then the software saves the output. This **MUST** be the standardized json file, since the software writes tests automatically based on the keys and values in this json file
+3. The software writes a command for the new software version which maybe needs to be changed if it is created in a separated folder or similar. The output of this command is compared to the output of the old software version which was saved under functional_testing/functional_testing_data.
+4. The software writes a markdown file whcih contains the tests.
+
+
 ## Modifying the created markdown script
 
-It appears that sometimes you change crucial parts and identifiers of your software such as flags or paths. Therefore the tool provides commands to change these.
+It appears that sometimes you change crucial parts and identifiers of your software such as flags or paths. Therefore the tool provides commands to change these. 
+
+**However, I think it is easier to just go to the test markdown file and replace the flags or similar with ctrl + F.**
 
 *Example: Change flag -ifa to -f in all commands in the markdown file*
 

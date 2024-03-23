@@ -5,7 +5,7 @@
 groups = ["default", "test"]
 strategy = ["cross_platform"]
 lock_version = "4.4"
-content_hash = "sha256:176499058b0b269f0d0956250d53818490a25d3b59cf26b08e60fbfa2a347e53"
+content_hash = "sha256:23d526703557a6037b854c9626c54c1a565007807d9dc21a6b4ba0665b56bf4a"
 
 [[package]]
 name = "biopython"
